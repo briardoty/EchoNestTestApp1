@@ -12,6 +12,13 @@ function EchoNestTest() {
     // create JSON request for echo nest data
     function searchEchoNest() {
         var searchString = $('#searchString').val();
+        var requestBuilder = new EchoRequestBuilder();
+        var request = {};
+
+        request['api_key'] = common.apikey;
+        request['name'] = 'radiohead'
+        
+        requestBuilder.postRequest(common.echoNestURL + 'artist', onSearchEchoNest, JSON.stringify(request), 1);
     }
 
     // called on completion of searchEchoNest
@@ -20,6 +27,7 @@ function EchoNestTest() {
             alert('Error retrieving EchoNest music data.')
 
         // process response
+        alert("Hello");
     }
 
 }
