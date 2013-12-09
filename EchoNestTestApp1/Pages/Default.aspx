@@ -15,7 +15,9 @@
 <body>
     <form>
         <input id="searchString" type="text" />
-        <input id="searchButton" value="Search Music" type="button" />
+        <input id="searchButton" value="Search Artists" type="button" /> <br />
+        <label>Artists: </label><select id="artistName"></select> <br />
+        <label>Songs: </label><select id="songName"></select>
     </form>
 
     <div>
