@@ -28,11 +28,12 @@ function EchoNestTest() {
     // called on completion of searchArtists
     function onArtistSearch(response) {
         if (response.result == 'error')
-            alert('Error retrieving EchoNest artist data.')
+            alert('Error retrieving EchoNest artist data.');
 
         // clear any old data
         clearArtistData();
         clearSongData();
+        clearAudioSummary();
 
         // process response
         $.each(response.response.artists, function () {
@@ -60,10 +61,11 @@ function EchoNestTest() {
     // called on completion of searchSongs
     function onSongSearch(response) {
         if (response.result == 'error')
-            alert('Error retrieving EchoNest song data.')
+            alert('Error retrieving EchoNest song data.');
 
         // clear any old data
         clearSongData();
+        clearAudioSummary();
 
         // process response
         $.each(response.response.songs, function () {
@@ -73,7 +75,33 @@ function EchoNestTest() {
 
     // create request for echo nest audio summary given selected track
     function pullAudioSummary() {
-        return;
+        var songID = $('#songName').val();
+        if (songID != 'select') {
+            var url = common.echoNestURL + '/song/search';
+
+            var request = {};
+            request['api_key'] = common.apiKey;
+            request['title'] = $('#songName option:selected').text();
+            request['bucket'] = "audio_summary";
+            request['format'] = "json";
+            request['results'] = 1;
+            request['artist_id'] = $('#artistName').val();
+
+            var requestBuilder = new EchoRequestBuilder();
+            requestBuilder.postRequest(url, onAudioSummaryPull, request);
+        }
+    }
+
+    // called on completion of pullAudioSummary
+    function onAudioSummaryPull(response) {
+        if (response.result == 'error')
+            alert('Error retieving EchoNest audio summary data.');
+
+        // clear any old data
+        clearAudioSummary();
+
+        // process response
+        $('#echoNestAudioSummary').append('<p>' + JSON.stringify(response.response.songs[0].audio_summary) + '</p>')
     }
 
     // clear any artist data on page
@@ -94,6 +122,14 @@ function EchoNestTest() {
             .end()
             .append('<option value="select">(Select a song)</option>')
             .val('select');
+    }
+
+    // clear any audio summary data on page
+    function clearAudioSummary() {
+        $('#echoNestAudioSummary')
+            .find('p')
+            .remove()
+            .end();
     }
 }
 

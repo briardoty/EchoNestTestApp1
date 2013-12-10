@@ -20,9 +20,7 @@
         <label>Songs: </label><select id="songName"></select>
     </form>
 
-    <div>
-        <table id="echoNestResults">
-        </table>
+    <div id="echoNestAudioSummary">
     </div>
 </body>
 </html>
